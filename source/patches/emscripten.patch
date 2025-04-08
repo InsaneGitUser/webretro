@@ -1,5 +1,5 @@
---- upstream/emscripten/src/library_webgl.js	2021-03-05 12:32:24.000000000 -0800
-+++ upstream/emscripten/src/library_webgl.js	2022-05-02 10:19:02.461667100 -0700
+--- upstream/emscripten/src/library_webgl.js  2021-03-05 12:32:24.000000000 -0800
++++ upstream/emscripten/src/library_webgl.js  2022-05-02 10:19:02.461667100 -0700
 @@ -3486,6 +3486,7 @@
    glDrawElements: function(mode, count, type, indices) {
  #if FULL_ES2
@@ -44,4 +44,16 @@
 +      warnOnce("glMapBufferRange is only supported when access is MAP_WRITE|INVALIDATE_BUFFER");
        return 0;
      }
- 
+   }
++--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -58,6 +58,7 @@
+  
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=2 -s FULL_ES2=1 -s WASM=1 -s ALLOW_MEMORY_GROWTH=1")
+  
+ +  set(EMSCRIPTEN_PRELOAD_FILES "${CMAKE_SOURCE_DIR}/assets/bios_CD_E.bin@/system/bios_CD_E.bin")
+  
+  add_custom_command(TARGET webretro POST_BUILD
+    COMMAND python3 ../emscripten_packager.py --build-dir ${CMAKE_BINARY_DIR}/build --output-dir ${CMAKE_BINARY_DIR}/dist
+    COMMENT "Packaging WebRetro with Emscripten"
+  )
